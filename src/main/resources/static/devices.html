@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Smart Home Doors and Windows</title>
+</head>
+
+<body>
+	<h1>Smart Home Windows and Doors</h1>
+
+	<div id="devices"></div>
+
+	<script>
+		// Function to fetch devices and display them
+		async function fetchDevices() {
+			const response = await fetch('http://localhost:8082/smarthome/devices/type?type=DOOR_WINDOW_CONTACT');
+			const data = await response.json();
+
+			const devicesContainer = document.getElementById('devices');
+			devicesContainer.innerHTML = '';
+
+			// Display devices for each room
+			data.forEach(roomData => {
+				const roomHeader = document.createElement('h2');
+				roomHeader.textContent = roomData.name;
+				devicesContainer.appendChild(roomHeader);
+
+				const ul = document.createElement('ul');
+				roomData.devices.forEach(device => {
+					const li = document.createElement('li');
+					li.innerHTML = `
+                <span>${device.name} [${device.state}]</span>
+                <button onclick="toggleDevice(${device.id})">Toggle</button>
+            `;
+					ul.appendChild(li);
+				});
+				devicesContainer.appendChild(ul);
+			});
+		}
+
+		// Function to toggle device state
+		async function toggleDevice(deviceId) {
+			const response = await fetch(`http://localhost:8082/smarthome/devices/${deviceId}/toggle`, {
+				method: 'POST',
+			});
+			if (response.status === 200) {
+				// If the request was successful, refresh the device list
+				fetchDevices();
+			} else {
+				alert('Failed to toggle device state.');
+			}
+		}
+
+		// Fetch and display devices when the page loads
+		fetchDevices();
+	</script>
+</body>
+
+</html>

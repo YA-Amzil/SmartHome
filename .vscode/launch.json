@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SmartHomeApplication<smarthome>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "be.pxl.smarthome.SmartHomeApplication",
+            "projectName": "smarthome",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
